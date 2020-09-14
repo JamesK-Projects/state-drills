@@ -21,24 +21,30 @@ class Accordion extends Component {
     }
 
     state = { 
-        currentSectionIndex: 0
+        currentSectionIndex: 0,
+        accordions: [false, false, false]
     }
 
     handleClick(index){
         console.log('clicked', this.props.sections[index].content)
-        {this.renderContent(index)}
+        let accordionClone = [...this.state.accordions]
+        accordionClone[index] = !accordionClone[index]
+        this.setState({
+            accordions: accordionClone
+        })
     }
 
     renderButtons(){
         return this.props.sections.map((sections, index) => (
-            <ul>
-                <li>
-                    <button key={index} onClick={() => this.handleClick(index)}>
+           
+                <li key={index}>
+                    <button onClick={() => this.handleClick(index)}>
                         {sections.title}
                     </button>
-                    {this.renderContent(index)}
+                    {
+                        this.state.accordions[index] && this.renderContent(index)
+                    }
                 </li>
-            </ul>
         ))
     }
 
@@ -52,7 +58,9 @@ class Accordion extends Component {
     render() { 
         return ( 
         <div>
-            {this.renderButtons()}
+             <ul>
+                {this.renderButtons()}
+            </ul>
         </div> 
         );
     }
